@@ -27,6 +27,7 @@
 // npm install express
 // npm install jsonwebtoken
 // npm install bcrypt body-parser
+// npm install cors
 
 // npm init -y && npm install express jsonwebtoken bcrypt body-parser axios && npm install --save-dev nodemon
 
