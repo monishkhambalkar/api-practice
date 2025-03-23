@@ -3,6 +3,8 @@
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 
+require __DIR__ . '/../Middleware/AuthMiddleware.php';
+
 $app->post('/products', function (Request $request, Response $response) {
     $data = $request->getParsedBody();
     $name = $data['name'];

@@ -1,16 +1,34 @@
 import React, { useState } from "react";
-import { Table, Button, Form, Modal } from "react-bootstrap";
+import { Table, Button, Form, Modal, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const ProductManagement = () => {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([
-    { id: 1, name: "Product 1", price: 100 },
-    { id: 2, name: "Product 2", price: 200 },
+    {
+      id: 1,
+      name: "Product 1",
+      price: 100,
+      category: "Category 1",
+      image: "https://dummyjson.com/image/150",
+    },
+    {
+      id: 2,
+      name: "Product 2",
+      price: 200,
+      category: "Category 2",
+      image: "https://dummyjson.com/image/200x100",
+    },
   ]);
   const [show, setShow] = useState(false);
-  const [product, setProduct] = useState({ id: null, name: "", price: "" });
+  const [product, setProduct] = useState({
+    id: null,
+    name: "",
+    price: "",
+    category: "",
+    image: "",
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -19,19 +37,9 @@ const ProductManagement = () => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    if (product.id) {
-      setProducts(products.map((p) => (p.id === product.id ? product : p)));
-    } else {
-      setProducts([...products, { ...product, id: products.length + 1 }]);
-    }
-    handleClose();
-  };
-
   const handleEdit = (product) => {
     navigate(`/update-product/${product.id}`);
     setProduct(product);
-
     handleShow();
   };
 
@@ -45,7 +53,7 @@ const ProductManagement = () => {
       <Button variant="primary" onClick={() => navigate("/add-product")}>
         Add Product
       </Button>
-      <Table striped bordered hover className="mt-3">
+      <Table striped bordered hover responsive className="mt-3">
         <thead>
           <tr>
             <th>ID</th>
@@ -60,10 +68,18 @@ const ProductManagement = () => {
           {products.map((p) => (
             <tr key={p.id}>
               <td>{p.id}</td>
-              <td>{p.image}</td>
+              <td>
+                <Image
+                  src={p.image}
+                  alt={p.name}
+                  width={50}
+                  height={50}
+                  rounded
+                />
+              </td>
               <td>{p.name}</td>
               <td>{p.category}</td>
-              <td>{p.price}</td>
+              <td>${p.price}</td>
               <td>
                 <Button
                   variant="warning"
@@ -81,7 +97,7 @@ const ProductManagement = () => {
         </tbody>
       </Table>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>{product.id ? "Edit" : "Add"} Product</Modal.Title>
         </Modal.Header>
@@ -97,6 +113,15 @@ const ProductManagement = () => {
               />
             </Form.Group>
             <Form.Group className="mt-2">
+              <Form.Label>Category</Form.Label>
+              <Form.Control
+                type="text"
+                name="category"
+                value={product.category}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mt-2">
               <Form.Label>Price</Form.Label>
               <Form.Control
                 type="number"
@@ -105,16 +130,17 @@ const ProductManagement = () => {
                 onChange={handleChange}
               />
             </Form.Group>
+            <Form.Group className="mt-2">
+              <Form.Label>Image URL</Form.Label>
+              <Form.Control
+                type="text"
+                name="image"
+                value={product.image}
+                onChange={handleChange}
+              />
+            </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
       </Modal>
     </div>
   );
