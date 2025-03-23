@@ -2,8 +2,7 @@ import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 
-const clientId =
-  "713340321689-cr6k9usm1lgsus377a23ia97b7rhudqq.apps.googleusercontent.com";
+const clientId = "";
 
 const OAuthLogin = () => {
   const handleSuccess = async (response) => {
@@ -15,7 +14,7 @@ const OAuthLogin = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:8000/auth/google", {
+      const res = await axios.post("", {
         token: response.credential,
       });
 
